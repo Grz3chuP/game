@@ -1,10 +1,11 @@
 <link rel="stylesheet" href="app.component.css" xmlns="http://www.w3.org/1999/html">
 <div class="boardWrapper">
+<app-spawn-control ></app-spawn-control>
 <div class="base">
 <h2>{{playerHP}}</h2>
 </div>
 <main>
-  <div [style.background-color]="grid.value >  0 ? 'green' : (grid.enemy > 0 ? 'red' :   'lightblue')"
+  <div [style.background-color]="grid.value >  0 ? 'green' : (grid.enemy > 0 ? 'brown' :   'lightblue')"
        [style.transform]="grid.isClicked ? 'rotate(20deg)' : 'rotate(0)'"
        [style.animation]="grid.isClicked ? 'fight 1s ease' : ''"
        [style.border]="grid.base ? '2px solid green' : '1px solid white'"
@@ -13,7 +14,16 @@
        *ngFor="let grid of board;let ii = index"
        (click)="addNumber(ii, grid.value)"
       #gridElement
-  >{{grid.value}} {{ii}} {{grid.enemy}} {{grid.isClicked}}</div>
+  >{{grid.value}} {{ii}} {{grid.enemy}} {{grid.isClicked}}
+  <div *ngIf="grid.enemy > 0"
+       class="enemyHPBar"
+       [style.width]="(grid.enemy / enemyMaxPower) * 100 + '%'"
+  ></div>
+    <div *ngIf="grid.value> 0"
+         class="enemyHPBar"
+         [style.width]="(grid.value / playerMaxPower()) * 100 + '%'"
+    ></div>
+  </div>
   <button (click)="randomlySpawnEnemy()">Start Game</button>
 
 </main>

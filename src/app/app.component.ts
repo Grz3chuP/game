@@ -1,7 +1,7 @@
 import {Component, signal, Renderer2, ElementRef} from '@angular/core';
 import {Boardtemplate} from "src/models/boardtemplate";
 import {interval} from "rxjs";
-
+import {checkIfUnitIsReady, isUnitReady, playerMaxPower, spawnedUnit} from "../playerspawner";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,8 @@ export class AppComponent {
   filledBoard: Boardtemplate[] = [];
   enemyMinPower = 1;
   enemyMaxPower = 3;
+
+
   spawnMinTime = 2000;
   spawnMaxTime = 3000;
   playerHP = 15;
@@ -86,8 +88,13 @@ export class AppComponent {
   addNumber(id: number, value: number) {
 
     if (this.spawningPionts.includes(id) && this.filledBoard[id].value === 0) {
-      this.filledBoard[id].value += 2;
-      this.movingNumber(id);
+      if (isUnitReady()) {
+        this.filledBoard[id].value += spawnedUnit();
+        this.movingNumber(id);
+        isUnitReady.set(false);
+        checkIfUnitIsReady();
+      }
+
     }
 
     console.log(this.filledBoard[id]);
@@ -103,6 +110,7 @@ export class AppComponent {
 
           // Check if a fight condition is met
           if (this.filledBoard[id + leftX].value > 0 && this.filledBoard[id + leftX].enemy > 0) {
+
             this.fight(id + leftX);
           }
 
@@ -179,4 +187,6 @@ export class AppComponent {
     }, 200);
   console.log('fight');
   }
+
+  protected readonly playerMaxPower = playerMaxPower;
 }
