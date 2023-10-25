@@ -1,0 +1,43 @@
+main {
+
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(10, 50px);
+  grid-gap: 5px;
+}
+.grid {
+  background-color: aquamarine;
+  position: relative;
+  text-align: center;
+  height: 50px;
+  transition: 0.1s ease;
+
+
+
+}
+.boardWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+  background: rgba(240, 248, 255, 0.4);
+  padding: 20px 10px 20px 10px;
+  border-radius: 15px;
+}
+
+@keyframes fight {
+  0% {
+    transform: rotate(0deg);
+    scale: 1;
+  }
+  50% {
+    transform: rotate(30deg);
+    scale: 1.3;
+  }
+  100% {
+    transform: rotate(0deg);
+    scale: 1;
+  }
+
+}
