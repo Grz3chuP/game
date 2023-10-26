@@ -1,0 +1,19 @@
+<div class="spawnControlWrapper ">
+  <div class="hPWrapper">
+    {{enemyHP()}}
+  </div>
+  <div class="spawnControl">
+    <p>Enemy:</p>
+    <div class="spawn-control">
+
+        <div class="p-1 border-b">Speed: {{enemyUnitSpeed() / 10}}</div>
+        <div class="p-1 border-b">Power: {{enemyMinPower()}} - {{enemyMaxPower()}}</div>
+      </div>
+      <div class="unitReady" *ngIf="!isUnitReady()"></div>
+      <div class="waitingBarWrapper">
+        <div >Spawn: {{enemySpawnSpeed() / 1000}}  sec</div>
+
+      </div>
+    </div>
+  </div>
+

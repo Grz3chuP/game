@@ -54,4 +54,6 @@ main {
   transition: 0.1s;
 }
 
-
+.base {
+  margin-right: 12px;
+}

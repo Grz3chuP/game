@@ -2,7 +2,14 @@ import {Component, signal, Renderer2, ElementRef} from '@angular/core';
 import {Boardtemplate} from "src/models/boardtemplate";
 import {interval} from "rxjs";
 import {checkIfUnitIsReady, isUnitReady, playerMaxPower, spawnedUnit, unitSpeed} from "../playerspawner";
-import {checkIfTrapIsReady, isTrapReady, trapPower} from "./trap/trap.component";
+import {checkIfTrapIsReady, isTrapReady, trapPower, trapSpeed, waitTrapTimeBar} from "./trap/trap.component";
+import {endGame, enemyHP, playerHP} from "../gamecontrol";
+import {
+  enemyMaxPower,
+  enemyMinPower, enemySpawnSpeed,
+  enemyTimeBar,
+
+} from "./enemy-control/enemy-control.component";
 
 @Component({
   selector: 'app-root',
@@ -13,28 +20,21 @@ export class AppComponent {
   title = 'Game';
   board: Boardtemplate[] = [];
   filledBoard: Boardtemplate[] = [];
-  enemyMinPower = 1;
-  enemyMaxPower = 3;
 
-
-  spawnMinTime = 2000;
-  spawnMaxTime = 3000;
-  playerHP = 15;
-  enemyHP = 15;
   spawningPionts = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
   spawnEnemyPoints = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99];
   constructor(private renderer: Renderer2, private el: ElementRef) {
     this.board = Array(100).fill({}, 0, 100)
     this.board.forEach((item, index) => {
       if (this.spawningPionts.includes(index)) {
-      this.board[index] = {id: index, value: 0, enemy: 0, isClicked: false, base: true};
+      this.board[index] = {id: index, value: 0, enemy: 0, isClicked: false, base: true, isFast: false };
       } else {
-        this.board[index] = {id: index, value: 0, enemy: 0, isClicked: false, base: false};
+        this.board[index] = {id: index, value: 0, enemy: 0, isClicked: false, base: false, isFast: false};
       }
     });
     this.filledBoard = [...this.board];
 
-
+    this.randomlySpawnEnemy()
     console.log(this.filledBoard[9].isClicked);
   }
 
@@ -98,7 +98,7 @@ export class AppComponent {
       }
 
     }
-    if (this.filledBoard[id].enemy > 0) {
+    if (this.filledBoard[id].enemy > 0 ) {
       this.filledBoard[id].enemy -= 1;
       this.animacja(id, 100);
     }
@@ -141,8 +141,9 @@ export class AppComponent {
 
           leftX += 1;
           if(leftX === 10) {
-            this.enemyHP -= this.filledBoard[id + leftX - 1].value;
+            enemyHP.set(enemyHP() - this.filledBoard[id + leftX - 1].value);
             this.filledBoard[id + leftX - 1].value = 0;
+            endGame();
           }
         } else {
           clearInterval(move);
@@ -167,8 +168,9 @@ export class AppComponent {
 
           leftX += 1;
           if(leftX === 10) {
-           this.playerHP -= this.filledBoard[id - leftX + 1].enemy;
+           playerHP.set(playerHP() - this.filledBoard[id - leftX + 1].enemy);
             this.filledBoard[id - leftX + 1].enemy = 0;
+            endGame();
           }
         } else {
           clearInterval(move);
@@ -180,14 +182,17 @@ export class AppComponent {
   }
 
   randomlySpawnEnemy() {
+
     const spawnEnemy = setInterval(() => {
 
+
     const randomSpawn = Math.floor(Math.random() * this.spawnEnemyPoints.length);
-    let randomEnemyStrenght = Math.floor(Math.random() * this.enemyMaxPower) + this.enemyMinPower;
+    let randomEnemyStrenght = Math.floor(Math.random() * enemyMaxPower()) + enemyMinPower();
     console.log(randomSpawn);
     this.filledBoard[this.spawnEnemyPoints[randomSpawn]].enemy = randomEnemyStrenght;
     this.movingEnemy(this.spawnEnemyPoints[randomSpawn]);
-    }, Math.floor(Math.random() * this.spawnMaxTime) + this.spawnMinTime);
+
+    }, enemySpawnSpeed());
   }
 
 
@@ -218,6 +223,7 @@ export class AppComponent {
   }
 
   protected readonly playerMaxPower = playerMaxPower;
+  protected readonly enemyMaxPower = enemyMaxPower;
 }
 
 

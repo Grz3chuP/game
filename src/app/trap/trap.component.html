@@ -1,6 +1,9 @@
-<p>trap works!</p>
-{{isTrapReady()}}
+<div class="trapWrapper">
+<p>trap</p>
+ <div *ngIf="isTrapReady()">Trap is Ready</div>
+ <div *ngIf="!isTrapReady()">Making Trap</div>
 <div class="waitingBarWrapper">
-  {{waitTrapTimeBar()}}
+
   <div class="waitingBar" [style.width]="(waitTrapTimeBar() / trapSpeed()) * 100 + '%'"> </div>
+</div>
 </div>

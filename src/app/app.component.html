@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="app.component.css" xmlns="http://www.w3.org/1999/html">
 <div class="boardWrapper">
-<app-spawn-control ></app-spawn-control>
+
 <div class="base">
-<h2>{{playerHP}}</h2>
+  <app-spawn-control ></app-spawn-control>
 </div>
 <main>
   <div [style.background-color]="grid.value >  0 ? 'green' : (grid.enemy > 0 ? 'brown' :   'lightblue')"
@@ -18,18 +18,19 @@
 
   <div *ngIf="grid.enemy > 0"
        class="enemyHPBar"
-       [style.width]="(grid.enemy / enemyMaxPower) * 100 + '%'"
+       [style.width]="(grid.enemy / enemyMaxPower()) * 100 + '%'"
   ></div>
     <div *ngIf="grid.value> 0"
          class="enemyHPBar"
          [style.width]="(grid.value / playerMaxPower()) * 100 + '%'"
     ></div>
   </div>
-  <button (click)="randomlySpawnEnemy()">Start Game</button>
+  <button>Start Game</button>
 
 </main>
+
 <div class="enemyBase">
-<h2>{{enemyHP}}</h2>
+  <app-enemy-control></app-enemy-control>
 </div>
 </div>
 <canvas style="width: 50px; height: 50px" id="canvas" class="canvas"></canvas>

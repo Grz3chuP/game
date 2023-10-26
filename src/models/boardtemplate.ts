@@ -4,4 +4,5 @@ export interface Boardtemplate {
   enemy: number;
   isClicked: boolean;
   base: boolean;
+  isFast: boolean;
 }

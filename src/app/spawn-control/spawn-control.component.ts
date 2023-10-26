@@ -5,8 +5,9 @@ import {
   playerMaxPower,
   playerMinPower,
   spawnedUnit,
-  spawnSpeed, waitTimeBar
+  spawnSpeed, unitSpeed, waitTimeBar
 } from "../../playerspawner";
+import {endGame, playerHP} from "../../gamecontrol";
 
 @Component({
   selector: 'app-spawn-control',
@@ -18,6 +19,7 @@ export class SpawnControlComponent {
 
 constructor() {
   checkIfUnitIsReady();
+
     // const spawnUnit = setTimeout(() => {
     //   isUnitReady.set(true);
     //   spawnedUnit.set(Math.floor(Math.random() * playerMaxPower()) + playerMinPower());
@@ -30,4 +32,6 @@ constructor() {
   protected readonly isUnitReady = isUnitReady;
   protected readonly waitTimeBar = waitTimeBar;
   protected readonly spawnSpeed = spawnSpeed;
+  protected readonly unitSpeed = unitSpeed;
+  protected readonly playerHP = playerHP;
 }

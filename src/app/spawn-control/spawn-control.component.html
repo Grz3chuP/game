@@ -1,13 +1,21 @@
 
 <div class="spawnControlWrapper ">
+  <div class="hPWrapper">
+    {{playerHP()}}
+  </div>
   <app-trap>  </app-trap>
+  <div class="spawnControl">
 <p>next unit:</p>
 <div class="spawn-control">
-  {{spawnedUnit()}}
-  {{isUnitReady()}}
+
+  <div class="unitReady" *ngIf="isUnitReady()">Power:{{spawnedUnit()}}
+  <div>Speed:{{unitSpeed() / 10}}</div>
+  </div>
+  <div class="unitReady" *ngIf="!isUnitReady()">Making Unit</div>
  <div class="waitingBarWrapper">
-   {{waitTimeBar()}}
+
  <div class="waitingBar" [style.width]="(waitTimeBar() / spawnSpeed()) * 100 + '%'"> </div>
  </div>
 </div>
+  </div>
 </div>
