@@ -5,7 +5,7 @@ import {
   playerMaxPower,
   playerMinPower,
   spawnedUnit,
-  spawnSpeed
+  spawnSpeed, waitTimeBar
 } from "../../playerspawner";
 
 @Component({
@@ -28,4 +28,6 @@ constructor() {
 
   protected readonly spawnedUnit = spawnedUnit;
   protected readonly isUnitReady = isUnitReady;
+  protected readonly waitTimeBar = waitTimeBar;
+  protected readonly spawnSpeed = spawnSpeed;
 }

@@ -1,6 +1,13 @@
-<p>spawn-control works!</p>
+
+<div class="spawnControlWrapper ">
+  <app-trap>  </app-trap>
+<p>next unit:</p>
 <div class="spawn-control">
   {{spawnedUnit()}}
   {{isUnitReady()}}
+ <div class="waitingBarWrapper">
+   {{waitTimeBar()}}
+ <div class="waitingBar" [style.width]="(waitTimeBar() / spawnSpeed()) * 100 + '%'"> </div>
+ </div>
 </div>
-
+</div>

@@ -12,10 +12,9 @@ main {
   height: 50px;
   transition: 0.1s ease;
 
-
-
-
 }
+
+
 .boardWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -54,3 +53,5 @@ main {
 
   transition: 0.1s;
 }
+
+

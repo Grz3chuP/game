@@ -1,0 +1,6 @@
+<p>trap works!</p>
+{{isTrapReady()}}
+<div class="waitingBarWrapper">
+  {{waitTrapTimeBar()}}
+  <div class="waitingBar" [style.width]="(waitTrapTimeBar() / trapSpeed()) * 100 + '%'"> </div>
+</div>

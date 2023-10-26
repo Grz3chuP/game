@@ -15,6 +15,7 @@
        (click)="addNumber(ii, grid.value)"
       #gridElement
   >{{grid.value}} {{ii}} {{grid.enemy}} {{grid.isClicked}}
+
   <div *ngIf="grid.enemy > 0"
        class="enemyHPBar"
        [style.width]="(grid.enemy / enemyMaxPower) * 100 + '%'"
