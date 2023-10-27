@@ -25,8 +25,12 @@
          [style.width]="(grid.value / playerMaxPower()) * 100 + '%'"
     ></div>
   </div>
-  <button>Start Game</button>
-
+  <button (click)="toggleGameStatus()">Start Game</button>
+  <div class="scoreWrapper flex">
+    <div class="wins grow">Wins: {{endGameScore().wins}}</div>
+    <div class="losses grow">Losses: {{endGameScore().loses}}</div>
+    <div class="losses grow">test {{testFromDatabase()}}</div>
+  </div>
 </main>
 
 <div class="enemyBase">

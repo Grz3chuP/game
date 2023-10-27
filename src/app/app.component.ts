@@ -3,13 +3,22 @@ import {Boardtemplate} from "src/models/boardtemplate";
 import {interval} from "rxjs";
 import {checkIfUnitIsReady, isUnitReady, playerMaxPower, spawnedUnit, unitSpeed} from "../playerspawner";
 import {checkIfTrapIsReady, isTrapReady, trapPower, trapSpeed, waitTrapTimeBar} from "./trap/trap.component";
-import {endGame, enemyHP, playerHP} from "../gamecontrol";
+import {
+  endGame,
+  endGameScore,
+  enemyHP,
+  gameIsRunning,
+  playerHP,
+  testFromDatabase,
+  toggleGameStatus
+} from "../gamecontrol";
 import {
   enemyMaxPower,
   enemyMinPower, enemySpawnSpeed,
   enemyTimeBar,
 
 } from "./enemy-control/enemy-control.component";
+import {getDataFromFirebase} from "../firebase";
 
 @Component({
   selector: 'app-root',
@@ -35,7 +44,9 @@ export class AppComponent {
     this.filledBoard = [...this.board];
 
     this.randomlySpawnEnemy()
+
     console.log(this.filledBoard[9].isClicked);
+    getDataFromFirebase();
   }
 
   handleClick(id: number) {
@@ -87,7 +98,7 @@ export class AppComponent {
 
 
   addNumber(id: number, value: number) {
-
+    if (gameIsRunning()) {
     if (this.spawningPionts.includes(id) && this.filledBoard[id].value === 0) {
       if (isUnitReady()) {
         this.filledBoard[id].value += spawnedUnit();
@@ -104,11 +115,11 @@ export class AppComponent {
     }
     if (this.filledBoard[id].value === 0 && this.filledBoard[id].enemy === 0 && !this.spawningPionts.includes(id) && isTrapReady() && !this.spawnEnemyPoints.includes(id)  ) {
       this.filledBoard[id].value += trapPower();
-      if (this.filledBoard[id + 1].value === 0 && this.filledBoard[id+ 1].enemy === 0 && !this.spawningPionts.includes(id +1) && !this.spawnEnemyPoints.includes(id + 1)) {
+      if (this.filledBoard[id + 1].value === 0 && this.filledBoard[id + 1].enemy === 0 && !this.spawningPionts.includes(id + 1) && !this.spawnEnemyPoints.includes(id + 1)) {
         this.filledBoard[id + 1].value += trapPower() / 2;
       }
-      if (this.filledBoard[id - 1].value === 0 && this.filledBoard[id - 1].enemy === 0 && !this.spawningPionts.includes(id - 1) && !this.spawnEnemyPoints.includes(id - 1) ) {
-        this.filledBoard[id - 1 ].value += trapPower() / 2;
+      if (this.filledBoard[id - 1].value === 0 && this.filledBoard[id - 1].enemy === 0 && !this.spawningPionts.includes(id - 1) && !this.spawnEnemyPoints.includes(id - 1)) {
+        this.filledBoard[id - 1].value += trapPower() / 2;
       }
       if (this.filledBoard[id + 10].value === 0 && this.filledBoard[id + 10].enemy === 0 && !this.spawningPionts.includes(id + 10) && !this.spawnEnemyPoints.includes(id + 10)) {
         this.filledBoard[id + 10].value += trapPower() / 2;
@@ -118,11 +129,10 @@ export class AppComponent {
       }
 
 
-
-
       isTrapReady.set(false);
       checkIfTrapIsReady();
       this.animacja(id, 100);
+    }
     }
   }
   movingNumber = (id: number, speed: number) => {
@@ -183,16 +193,21 @@ export class AppComponent {
 
   randomlySpawnEnemy() {
 
+
+
+
+
     const spawnEnemy = setInterval(() => {
 
-
+      if (gameIsRunning()) {
     const randomSpawn = Math.floor(Math.random() * this.spawnEnemyPoints.length);
     let randomEnemyStrenght = Math.floor(Math.random() * enemyMaxPower()) + enemyMinPower();
     console.log(randomSpawn);
     this.filledBoard[this.spawnEnemyPoints[randomSpawn]].enemy = randomEnemyStrenght;
     this.movingEnemy(this.spawnEnemyPoints[randomSpawn]);
-
+      }
     }, enemySpawnSpeed());
+
   }
 
 
@@ -224,6 +239,9 @@ export class AppComponent {
 
   protected readonly playerMaxPower = playerMaxPower;
   protected readonly enemyMaxPower = enemyMaxPower;
+  protected readonly toggleGameStatus = toggleGameStatus;
+  protected readonly endGameScore = endGameScore;
+  protected readonly testFromDatabase = testFromDatabase;
 }
 
 
